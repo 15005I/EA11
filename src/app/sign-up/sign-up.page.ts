@@ -4,6 +4,7 @@ import { FormsModule} from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,31 +15,36 @@ import { Router } from '@angular/router';
 })
 export class SignUpPage implements OnInit {
 
-  constructor(private alertController: AlertController, private router: Router) {}
-
   ngOnInit() {
   }
 
   // Función que se ejecuta al hacer submit del formulario
-  async onSubmit() {
-    const email = (document.getElementById('email') as HTMLInputElement).value;
-    const password = (document.getElementById('password') as HTMLInputElement).value;
+  email: string = '';
+  password: string = '';
 
-    // Si el email y password son válidos, muestra un mensaje de éxito
-    if (this.validateEmail(email) && password) {
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    private authService: AuthService
+  ){}
+
+  async onSubmit() {
+    try{
+      await this.authService.register(this.email, this.password);
       const alert = await this.alertController.create({
         header: 'Signup Success',
         message: 'You have created successfully!',
         buttons: ['OK'],
       });
       await alert.present();
-    } else {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Please complete all.',
-        buttons: ['OK'],
-      });
-      await alert.present();
+      this.router.navigate(['/login']);
+    } catch (error) {
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'Please complete all.',
+          buttons: ['OK'],
+        });
+        await alert.present();
     }
   }
 
