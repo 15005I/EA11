@@ -1,11 +1,3 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
@@ -14,7 +6,31 @@
   </ion-header>
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-button (click)="navigateToLogin()">Login</ion-button>
   </div>
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Generador de Ideas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-item>
+      <ion-label position="floating">Ingresa tu idea inicial</ion-label>
+      <ion-input [(ngModel)]="ideaPrompt"
+        placeholder="Por ejemplo, 'Genera ideas para una startup de tecnología'"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" (click)="generateIdea()">Generar Idea</ion-button>
+
+    <ion-card *ngIf="generatedIdea">
+      <ion-card-header>
+        <ion-card-title>Tu Idea Generada</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ generatedIdea }}
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
 </ion-content>
