@@ -5,7 +5,7 @@ import axios from 'axios';
   providedIn: 'root'
 })
 export class OpenaiService {
-  private apiKey: string = "";
+  private apiKey: string = "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";
   
   constructor(){}
 
