@@ -23,6 +23,10 @@ export class HomePage {
         this.router.navigate(["/login"]);
     }
 
+    navigateToSignUp(){
+        this.router.navigate(["/sign-up"]);
+    }
+
     async generateIdea() {
         if (this.ideaPrompt.trim() === '') {
             alert('Por favor ingresa una idea inicial.');

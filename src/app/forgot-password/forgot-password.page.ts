@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,24 +15,28 @@ import { Router } from '@angular/router';
 })
 export class ForgotPasswordPage implements OnInit {
 
-  constructor(private alertController: AlertController, private router: Router) {}
+  email: string = '';
+  password: string = '';
+
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    private authService: AuthService
+  ){}
 
   ngOnInit() {}
 
   // Función que se ejecuta al hacer submit del formulario
   async onSubmit() {
-    const email = (document.getElementById('email') as HTMLInputElement).value;
-    const password = (document.getElementById('password') as HTMLInputElement).value;
-
-    // Si el email y password son válidos, muestra un mensaje de éxito
-    if (this.validateEmail(email) && password) {
+    try{
+      await this.authService.resetPassword(this.email);
       const alert = await this.alertController.create({
         header: 'reset Success',
         message: 'You have reseted successfully!',
         buttons: ['OK'],
       });
       await alert.present();
-    } else {
+    } catch (error) {
       const alert = await this.alertController.create({
         header: 'Error',
         message: 'Please complete all.',
