@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,25 +15,31 @@ import { Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
 
-  constructor(private alertController: AlertController, private router: Router) { }
+  email: string = '';
+  password: string = '';
+
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    private authService: AuthService
+  ){}
+
 
   ngOnInit() {
   }
 
   // Función que se ejecuta al hacer submit del formulario
-  async onSubmit() {
-    const email = (document.getElementById("email") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement).value;
-
+  async onSubmit(){
+    try{
     // Si el email y password son válidos, muestra un mensaje de éxito
-    if (this.validateEmail(email) && password) {
+     await this.authService.login(this.email, this.password);
       const alert = await this.alertController.create({
         header: 'Login Success',
         message: 'You have logged in successfully!',
         buttons: ['OK']
       });
       await alert.present();
-    } else {
+    } catch (error) {
       const alert = await this.alertController.create({
         header: 'Error',
         message: 'Please check your credentials.',
